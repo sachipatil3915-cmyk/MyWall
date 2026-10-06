@@ -22,18 +22,7 @@ This folder is ours for the ten days. Three tables, three shapes.
 - **Panel B** (`panel-B.csv`) — GSS 2010: `degree`, `grass`, hours of work and rest. `mntlhlth` is *days* of poor mental health — a Quant. Do not mosaic it.
 - **Panel C** (`panel-C.csv`) — gapminder 2007: life expectancy, GDP per capita, population by country.
 
-Talk (B) and tape-measure (A) are different hunts.
 
-We load from this folder:
-
-``` r
-library(readr)
-library(tidyverse)
-
-A <- read_csv("panel-A.csv")
-B <- read_csv("panel-B.csv")
-C <- read_csv("panel-C.csv")
-```
 
 Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
 
@@ -257,10 +246,48 @@ What is a case? Which columns are Quant / Qual? What is missing?
 ``` r
 # glimpse() / inspect() / skim()
 ```
+```{r}
+myPanelBData <- read_csv(file="data/panel-B.csv")
+```
+ 
+```{r}
+glimpse(myPanelBData)
+```
+```{r}
+skim(myPanelBData)
+```
+ 
+```{r}
+myPanelBData_mod <- myPanelBData |> drop_na(degree)
+```
+```{r}
+dim(myPanelBData_mod)
+```
+```{r}
+myPanelBData_mod <- myPanelBData |> drop_na(grass)
+```
+```{r}
+dim(myPanelBData_mod)
+```
+```{r}
+vcd::structable(degree~grass,data=myPanelBData)
+```
+```{r}
+vcd::structable(degree~grass,data=myPanelBData) |> vcd::mosaic()
+```
+```{r}
+mosaic::xchisq.test(degree~grass,data=myPanelBData)
+```
 
+ 
 ### 2. Ask
 
 One question *this* table can answer. One it cannot. Write both.
+ 
+A question the graph can answer -
+Does the education of a person affect their opinion on whether marijuana should be legal or not ?
+
+A question theb graph cannot answer -
 
 ### 3. Choose a mark
 
