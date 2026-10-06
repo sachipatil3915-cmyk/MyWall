@@ -12,19 +12,8 @@ format:
 
 > How do bodies measure, how do people talk about mind and school, and how long do countries live?
 
-This sentence stays at the top. Every panel must attach to it. If a plot cannot be introduced in a clause that hangs off this line, it is off the wall.
-
-# Introduction — the tables we own
-
-This folder is ours for the ten days. Three tables, three shapes.
-
-- **Panel A** (`panel-A.csv`) — body measures (`bdims`): height, weight, waist, hip, chest, age, sex. Stand-in for NHANES when that package is not on the machine.
-- **Panel B** (`panel-B.csv`) — GSS 2010: `degree`, `grass`, hours of work and rest. `mntlhlth` is *days* of poor mental health — a Quant. Do not mosaic it.
-- **Panel C** (`panel-C.csv`) — gapminder 2007: life expectancy, GDP per capita, population by country.
 
 
-
-Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
 
 # Panel A — body / measure
 
@@ -33,6 +22,9 @@ Found tables train the mark. A campus Free Hunch, if we collect one, is a **made
 ### 1. See the table
 
 What is a case? Which columns are Quant / Qual? What is missing?
+
+-We have 6 quantitative variables in our data -  age,weight_kg,height_cm,wasit_cm,hip_cm,chest_cm
+and only 1 qualitative varaible - sex 
 
 ``` r
 # glimpse() / inspect() / skim()
@@ -63,8 +55,7 @@ inspect(myPanelAData)
 skim(myPanelAData)
 ```
 
-We have 6 quantitative variables in our data -  age,weight_kg,height_cm,wasit_cm,hip_cm,chest_cm
-and only 1 qualitative varaible - sex 
+
 
 ### 2. Ask
 
@@ -132,11 +123,13 @@ What is the variation in weight in the given dataset ?
 
 ### 4. Predict
 
-What do we think we will see? One sentence, before Run.
+We predict the graph to depict the chest size and hip size of women to be more than men.
+Referring to the stereotypical anatomy , we predict the variation in chest size and hip size  of women to be more than men. 
 
 ### 5. Make
 
-Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+
 
 1)Who is heavier between men and women  ? `
 ```{r}
@@ -212,26 +205,26 @@ myPanelAData |> gf_density(~height_cm)
 myPanelAData |> gf_density(~weight_kg)
 ```
 
-```{r}
-myPanelAData |> group_by(sex) |> summarise(mean_chest_cm=mean(chest_cm,na.rm=T))
-```
 
-```{r}
-mosaic::t_test(chest_cm ~ sex, data= myPanelAData)
-```
 
 
 
 ### 6. Say
 
 
-We all found the density graph comparing chest sizes of men and women interesting  because according to the graph, men have a bigger chest size than women which is quite unexpected. Men also have larger variation in the sizes while women have more difference in density for different sizes this is surpising because according to the bar graph comparing the count of men and women , women are more in quantity.
+We all found the density graph comparing chest sizes of men and women interesting  because according to the graph, men have a bigger chest size than women which is quite unexpected. Men also have larger variation in the sizes while women have more difference in density for different sizes this is surprising because according to the bar graph comparing the count of men and women , women are more in quantity.
 
-We also found the density graph comparing hip size of men and women surprising because it is contrasting the generel belief that women have wider hips. 
+We also found the density graph comparing hip size of men and women surprising because it is contrasting the general belief that women have wider hips. 
 
 ### 7. Limit
 
 What this panel cannot do. Which kit table we refused to abuse.
+```{r}
+myPanelAData |> group_by(sex) |> summarise(mean_chest_cm=mean(chest_cm,na.rm=T))
+```
+```{r}
+mosaic::t_test(chest_cm ~ sex, data= myPanelAData)
+```
 
 
 
@@ -243,6 +236,8 @@ What this panel cannot do. Which kit table we refused to abuse.
 
 What is a case? Which columns are Quant / Qual? What is missing?
 
+The quantitative variables in  the dataset are -hours of relaxation(hrsrelax), hours of labour (hrsl) and mental health(mntlhlth) {3}
+The qualitative variables in  the dataset are-degree, marijuana(grass) {2}
 ``` r
 # glimpse() / inspect() / skim()
 ```
@@ -257,12 +252,31 @@ glimpse(myPanelBData)
 skim(myPanelBData)
 ```
  
-```{r}
-myPanelBData_mod <- myPanelBData |> drop_na(degree)
-```
-```{r}
-dim(myPanelBData_mod)
-```
+
+ 
+### 2. Ask
+ 
+A question the graph can answer -
+Does the education of a person affect their opinion on whether marijuana should be legal or not ?
+
+A question the graph cannot answer -
+
+
+
+### 3. Choose a mark
+
+Does the education of a person affect their opinion on whether marijuana should be legal or not ?
+-Mosaic graph 
+
+### 4. Predict
+
+we predict that a person pursuing a higher education degree would want marijuana to be legal, to regulate stress levels and mental health.
+
+### 5. Make
+
+
+modifying 
+
 ```{r}
 myPanelBData_mod <- myPanelBData |> drop_na(grass)
 ```
@@ -270,48 +284,25 @@ myPanelBData_mod <- myPanelBData |> drop_na(grass)
 dim(myPanelBData_mod)
 ```
 ```{r}
-vcd::structable(degree~grass,data=myPanelBData)
+vcd::structable(degree~grass, data = myPanelBData)
 ```
 ```{r}
-vcd::structable(degree~grass,data=myPanelBData) |> vcd::mosaic()
+vcd::structable(degree~grass, data=myPanelBData) |>
+  vcd::mosaic(labeling_args = list(rot_labels = c(top = 45)),
+              margins = c(top = 6))
 ```
-```{r}
-mosaic::xchisq.test(degree~grass,data=myPanelBData)
-```
 
- 
-### 2. Ask
 
-One question *this* table can answer. One it cannot. Write both.
- 
-A question the graph can answer -
-Does the education of a person affect their opinion on whether marijuana should be legal or not ?
 
-A question theb graph cannot answer -
 
-### 3. Choose a mark
-
-Geom, map mark, or (later) test that matches the pair type. Name it before you code.
-
-### 4. Predict
-
-What do we think we will see? One sentence, before Run.
-
-### 5. Make
-
-Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
-
-``` r
-# human chunk  # ## Prompt we actually used # ai_draft # ours
-```
 
 ### 6. Say
 
-Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+looking at the graph, the ratio of people who think marijuana should be legal and not legal appears to be similar, in each individual degree. 
+saying that, it is surprising information to see that the percentage of high schoolers who want marijuana to be legal is way larger than any other degrees.But this could also be because the number of high schoolers in this dataset is much more. 
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
 
 # Panel C — place
 
