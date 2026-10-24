@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 ---
 title: "Group 3 — Bodies and talk"
 subtitle: "Studio wall"
@@ -38,6 +47,7 @@ library(tidyverse)
 library(mosaic)
 library(skimr)
 library(ggformula)
+library(rnaturalearth)
 ```
 
 ```{r}
@@ -428,18 +438,10 @@ panel.C |> dplyr::filter(under5_mortality_2018_male>= 120)
 
 
 
-```{r}
-glimpse(world_selected)
-```
-
-```{r}
-glimpse(panel.C)
-```
 
 
-```{r}
-C_mod <- panel.C |> dplyr::left_join(world_selected,by=c("country"="name"))
-```
+
+
 
 ```{r}
 world <- rnaturalearth::ne_countries(returnclass = "sf")
@@ -447,6 +449,10 @@ glimpse(world)
 world |> ggformula::gf_sf(geometry = ~geometry)
 world_selected <- world |> dplyr::select(name, geometry)
 glimpse(world_selected)
+```
+
+```{r}
+C_mod <- panel.C |> dplyr::left_join(world_selected,by=c("country"="name"))
 ```
 
 
@@ -495,11 +501,7 @@ panel.C_fixed <- panel.C |>
   ))
 ```
 
-```{r}
-panel.C_fixed |>
-  dplyr::anti_join(sf::st_drop_geometry(world_selected), by = c("country" = "name")) |>
-  dplyr::select(country)
-```
+
 ```{r}
 C_mod <- world_selected |>
   dplyr::left_join(panel.C_fixed, by = c("name" = "country"))

@@ -76,6 +76,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-62e2d20df198e8a01bb734742f2e28cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+
+<script src="index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="index_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="index_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+
+<script src="index_files/libs/leaflet-1.3.1/leaflet.js"></script>
+
+<link href="index_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+
+<script src="index_files/libs/proj4-2.6.2/proj4.min.js"></script>
+
+<script src="index_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+
+<link href="index_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+
+<script src="index_files/libs/leaflet-binding-2.2.3/leaflet.js"></script>
+
 
 
 <link rel="stylesheet" href="styles.css">
@@ -93,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#panel-a-body-measure" id="toc-panel-a-body-measure" class="nav-link" data-scroll-target="#panel-a-body-measure">Panel A — body / measure</a></li>
   <li><a href="#panel-b-category-talk" id="toc-panel-b-category-talk" class="nav-link" data-scroll-target="#panel-b-category-talk">Panel B — category / talk</a></li>
   <li><a href="#panel-c-place" id="toc-panel-c-place" class="nav-link" data-scroll-target="#panel-c-place">Panel C — place</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#panel-d-erin-brockovich" id="toc-panel-d-erin-brockovich" class="nav-link" data-scroll-target="#panel-d-erin-brockovich">Panel-D ( Erin Brockovich )</a></li>
   </ul>
 </nav>
 </div>
@@ -198,7 +218,8 @@ The following object is masked from 'package:mosaic':
 
     n_missing</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>myPanelAData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file=</span><span class="st">"data/panel-A.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -918,11 +939,254 @@ NOT LEGAL             112       63         307             44            130</co
 <h1>Panel C — place</h1>
 <p><em>lifeExp is the honest fill. pop is a count — symbol map, not choropleth.</em></p>
 <p>Geometry is not in the CSV. Join in R, then use the same seven headings.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sf) # library(rnaturalearth) # world &lt;- ne_countries(scale = "medium", returnclass = "sf") # # join on country name; list the unmatched labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sf) # library(rnaturalearth) # world &lt;- ne_countries(scale = "medium", returnclass = "sf") # # join on country name; list the unmatched labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file=</span><span class="st">"data/panel-C.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 195 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): country
+dbl (5): under5_mortality_2018, infant_mortality_2018, neonatal_mortality_20...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
 <section id="see-the-table-2" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table-2">1. See the table</h3>
 <p>What is a case? Which columns are Quant / Qual? What is missing?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(panel.C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 195
+Columns: 6
+$ country                      &lt;chr&gt; "Afghanistan", "Albania", "Algeria", "And…
+$ under5_mortality_2018        &lt;dbl&gt; 62, 9, 23, 3, 77, 6, 10, 12, 4, 4, 22, 10…
+$ infant_mortality_2018        &lt;dbl&gt; 48, 8, 20, 3, 52, 5, 9, 11, 3, 3, 19, 8, …
+$ neonatal_mortality_2018      &lt;dbl&gt; 37, 7, 15, 1, 28, 3, 6, 6, 2, 2, 11, 5, 3…
+$ under5_mortality_2018_male   &lt;dbl&gt; 66, 9, 25, 3, 83, 7, 11, 14, 4, 4, 24, 11…
+$ under5_mortality_2018_female &lt;dbl&gt; 59, 8, 22, 3, 71, 6, 9, 11, 3, 3, 19, 9, …</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inspect</span>(panel.C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+categorical variables:  
+     name     class levels   n missing
+1 country character    195 195       0
+                                   distribution
+1 Afghanistan (0.5%), Albania (0.5%) ...       
+
+quantitative variables:  
+                          name   class min  Q1 median   Q3 max     mean
+1        under5_mortality_2018 numeric   2 7.0     17 43.0 122 28.04103
+2        infant_mortality_2018 numeric   1 6.0     14 32.5  84 21.30769
+3      neonatal_mortality_2018 numeric   1 4.0     10 20.0  42 12.70256
+4   under5_mortality_2018_male numeric   2 8.0     18 47.5 127 30.24615
+5 under5_mortality_2018_female numeric   2 6.5     15 38.0 115 25.71282
+        sd   n missing
+1 28.29463 195       0
+2 19.33928 195       0
+3 10.52556 195       0
+4 30.11611 195       0
+5 26.43782 195       0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(panel.C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">panel.C</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">195</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">country</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">195</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">under5_mortality_2018</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28.04</td>
+<td style="text-align: right;">28.29</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">43.0</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">infant_mortality_2018</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.31</td>
+<td style="text-align: right;">19.34</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">32.5</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">▇▃▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">neonatal_mortality_2018</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.70</td>
+<td style="text-align: right;">10.53</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">20.0</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">▇▃▂▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">under5_mortality_2018_male</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.25</td>
+<td style="text-align: right;">30.12</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">47.5</td>
+<td style="text-align: right;">127</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">under5_mortality_2018_female</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.71</td>
+<td style="text-align: right;">26.44</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">38.0</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="ask-2" class="level3">
 <h3 class="anchored" data-anchor-id="ask-2">2. Ask</h3>
@@ -930,36 +1194,515 @@ NOT LEGAL             112       63         307             44            130</co
 </section>
 <section id="choose-a-mark-2" class="level3">
 <h3 class="anchored" data-anchor-id="choose-a-mark-2">3. Choose a mark</h3>
-<p>Geom, map mark, or (later) test that matches the pair type. Name it before you code.</p>
+<p>What is the distribution of neonatal mortality rates across all countires in the year 2018? - Density</p>
+<p>What is the distribution of neonatal mortality rates across all countires in the year 2018? -Density</p>
+<p>What is the distribution of female under 5 mortality rates across all countries in the year 2018? -histogram</p>
 </section>
 <section id="predict-2" class="level3">
 <h3 class="anchored" data-anchor-id="predict-2">4. Predict</h3>
-<p>What do we think we will see? One sentence, before Run.</p>
 </section>
 <section id="make-2" class="level3">
 <h3 class="anchored" data-anchor-id="make-2">5. Make</h3>
 <p>Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># human chunk  # ## Prompt we actually used # ai_draft # ours</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># human chunk  # ## Prompt we actually used # ai_draft # ours</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What is the distrubution of neonatal mortality rates across all countires in the year 2018?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> <span class="fu">gf_density</span>(<span class="sc">~</span>neonatal_mortality_2018)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Which are the countries with more than 40 neonatal mortality rate?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(neonatal_mortality_2018 <span class="sc">&gt;=</span> <span class="dv">40</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 6
+  country     under5_mortality_2018 infant_mortality_2018 neonatal_mortality_2…¹
+  &lt;chr&gt;                       &lt;dbl&gt;                 &lt;dbl&gt;                  &lt;dbl&gt;
+1 Central Af…                   116                    84                     41
+2 Pakistan                       69                    57                     42
+3 South Sudan                    99                    64                     40
+# ℹ abbreviated name: ¹​neonatal_mortality_2018
+# ℹ 2 more variables: under5_mortality_2018_male &lt;dbl&gt;,
+#   under5_mortality_2018_female &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> <span class="fu">gf_density</span>(<span class="sc">~</span>under5_mortality_2018)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(under5_mortality_2018<span class="sc">&gt;=</span> <span class="dv">120</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  country under5_mortality_2018 infant_mortality_2018 neonatal_mortality_2018
+  &lt;chr&gt;                   &lt;dbl&gt;                 &lt;dbl&gt;                   &lt;dbl&gt;
+1 Nigeria                   120                    76                      36
+2 Somalia                   122                    77                      38
+# ℹ 2 more variables: under5_mortality_2018_male &lt;dbl&gt;,
+#   under5_mortality_2018_female &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span>under5_mortality_2018_female)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(under5_mortality_2018_female<span class="sc">&gt;=</span> <span class="dv">110</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 6
+  country     under5_mortality_2018 infant_mortality_2018 neonatal_mortality_2…¹
+  &lt;chr&gt;                       &lt;dbl&gt;                 &lt;dbl&gt;                  &lt;dbl&gt;
+1 Central Af…                   116                    84                     41
+2 Chad                          119                    71                     34
+3 Nigeria                       120                    76                     36
+4 Somalia                       122                    77                     38
+# ℹ abbreviated name: ¹​neonatal_mortality_2018
+# ℹ 2 more variables: under5_mortality_2018_male &lt;dbl&gt;,
+#   under5_mortality_2018_female &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span>under5_mortality_2018_male)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(under5_mortality_2018_male<span class="sc">&gt;=</span> <span class="dv">120</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 6
+  country     under5_mortality_2018 infant_mortality_2018 neonatal_mortality_2…¹
+  &lt;chr&gt;                       &lt;dbl&gt;                 &lt;dbl&gt;                  &lt;dbl&gt;
+1 Central Af…                   116                    84                     41
+2 Chad                          119                    71                     34
+3 Nigeria                       120                    76                     36
+4 Somalia                       122                    77                     38
+# ℹ abbreviated name: ¹​neonatal_mortality_2018
+# ℹ 2 more variables: under5_mortality_2018_male &lt;dbl&gt;,
+#   under5_mortality_2018_female &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> rnaturalearth<span class="sc">::</span><span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(world)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 177
+Columns: 169
+$ featurecla &lt;chr&gt; "Admin-0 country", "Admin-0 country", "Admin-0 country", "A…
+$ scalerank  &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ labelrank  &lt;int&gt; 6, 3, 7, 2, 2, 3, 3, 2, 2, 2, 2, 2, 6, 2, 3, 3, 5, 5, 2, 4,…
+$ sovereignt &lt;chr&gt; "Fiji", "United Republic of Tanzania", "Western Sahara", "C…
+$ sov_a3     &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "US1", "KA1", "UZB", "PNG", "ID…
+$ adm0_dif   &lt;int&gt; 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ level      &lt;int&gt; 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…
+$ type       &lt;chr&gt; "Sovereign country", "Sovereign country", "Indeterminate", …
+$ tlc        &lt;chr&gt; "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1",…
+$ admin      &lt;chr&gt; "Fiji", "United Republic of Tanzania", "Western Sahara", "C…
+$ adm0_a3    &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ geou_dif   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ geounit    &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ gu_a3      &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ su_dif     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ subunit    &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ su_a3      &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PN1", "ID…
+$ brk_diff   &lt;int&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ name       &lt;chr&gt; "Fiji", "Tanzania", "W. Sahara", "Canada", "United States o…
+$ name_long  &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ brk_a3     &lt;chr&gt; "FJI", "TZA", "B28", "CAN", "USA", "KAZ", "UZB", "PN1", "ID…
+$ brk_name   &lt;chr&gt; "Fiji", "Tanzania", "W. Sahara", "Canada", "United States",…
+$ brk_group  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ abbrev     &lt;chr&gt; "Fiji", "Tanz.", "W. Sah.", "Can.", "U.S.A.", "Kaz.", "Uzb.…
+$ postal     &lt;chr&gt; "FJ", "TZ", "WS", "CA", "US", "KZ", "UZ", "PG", "INDO", "AR…
+$ formal_en  &lt;chr&gt; "Republic of Fiji", "United Republic of Tanzania", "Sahrawi…
+$ formal_fr  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ name_ciawf &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ note_adm0  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ note_brk   &lt;chr&gt; NA, NA, "Self admin.; Claimed by Morocco", NA, NA, NA, NA, …
+$ name_sort  &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ name_alt   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ mapcolor7  &lt;int&gt; 5, 3, 4, 6, 4, 6, 2, 4, 6, 3, 5, 4, 2, 5, 2, 6, 2, 5, 2, 1,…
+$ mapcolor8  &lt;int&gt; 1, 6, 7, 6, 5, 1, 3, 2, 6, 1, 1, 4, 8, 2, 6, 1, 1, 2, 5, 1,…
+$ mapcolor9  &lt;int&gt; 2, 2, 4, 2, 1, 6, 5, 3, 6, 3, 5, 4, 6, 7, 4, 8, 7, 5, 7, 2,…
+$ mapcolor13 &lt;int&gt; 2, 2, 4, 2, 1, 1, 4, 1, 11, 13, 9, 7, 7, 3, 1, 6, 2, 7, 7, …
+$ pop_est    &lt;dbl&gt; 889953, 58005463, 603253, 37589262, 328239523, 18513930, 33…
+$ pop_rank   &lt;int&gt; 11, 16, 11, 15, 17, 14, 15, 13, 17, 15, 14, 16, 14, 16, 15,…
+$ pop_year   &lt;int&gt; 2019, 2019, 2017, 2019, 2019, 2019, 2019, 2019, 2019, 2019,…
+$ gdp_md     &lt;int&gt; 5496, 63177, 907, 1736425, 21433226, 181665, 57921, 24829, …
+$ gdp_year   &lt;int&gt; 2019, 2019, 2007, 2019, 2019, 2019, 2019, 2019, 2019, 2019,…
+$ economy    &lt;chr&gt; "6. Developing region", "7. Least developed region", "7. Le…
+$ income_grp &lt;chr&gt; "4. Lower middle income", "5. Low income", "5. Low income",…
+$ fips_10    &lt;chr&gt; "FJ", "TZ", "WI", "CA", "US", "KZ", "UZ", "PP", "ID", "AR",…
+$ iso_a2     &lt;chr&gt; "FJ", "TZ", "EH", "CA", "US", "KZ", "UZ", "PG", "ID", "AR",…
+$ iso_a2_eh  &lt;chr&gt; "FJ", "TZ", "EH", "CA", "US", "KZ", "UZ", "PG", "ID", "AR",…
+$ iso_a3     &lt;chr&gt; "FJI", "TZA", "ESH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ iso_a3_eh  &lt;chr&gt; "FJI", "TZA", "ESH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ iso_n3     &lt;chr&gt; "242", "834", "732", "124", "840", "398", "860", "598", "36…
+$ iso_n3_eh  &lt;chr&gt; "242", "834", "732", "124", "840", "398", "860", "598", "36…
+$ un_a3      &lt;chr&gt; "242", "834", "732", "124", "840", "398", "860", "598", "36…
+$ wb_a2      &lt;chr&gt; "FJ", "TZ", "-99", "CA", "US", "KZ", "UZ", "PG", "ID", "AR"…
+$ wb_a3      &lt;chr&gt; "FJI", "TZA", "-99", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ woe_id     &lt;int&gt; 23424813, 23424973, 23424990, 23424775, 23424977, -90, 2342…
+$ woe_id_eh  &lt;int&gt; 23424813, 23424973, 23424990, 23424775, 23424977, 23424871,…
+$ woe_note   &lt;chr&gt; "Exact WOE match as country", "Exact WOE match as country",…
+$ adm0_iso   &lt;chr&gt; "FJI", "TZA", "B28", "CAN", "USA", "KAZ", "UZB", "PN1", "ID…
+$ adm0_diff  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ adm0_tlc   &lt;chr&gt; "FJI", "TZA", "B28", "CAN", "USA", "KAZ", "UZB", "PN1", "ID…
+$ adm0_a3_us &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_fr &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ru &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_es &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_cn &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_tw &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_in &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_np &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_pk &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_de &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_gb &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_br &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_il &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ps &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_sa &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_eg &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ma &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_pt &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ar &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_jp &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ko &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_vn &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_tr &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_id &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_pl &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_gr &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_it &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_nl &lt;chr&gt; "FJI", "TZA", "MAR", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_se &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_bd &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_ua &lt;chr&gt; "FJI", "TZA", "SAH", "CAN", "USA", "KAZ", "UZB", "PNG", "ID…
+$ adm0_a3_un &lt;int&gt; -99, -99, -99, -99, -99, -99, -99, -99, -99, -99, -99, -99,…
+$ adm0_a3_wb &lt;int&gt; -99, -99, -99, -99, -99, -99, -99, -99, -99, -99, -99, -99,…
+$ continent  &lt;chr&gt; "Oceania", "Africa", "Africa", "North America", "North Amer…
+$ region_un  &lt;chr&gt; "Oceania", "Africa", "Africa", "Americas", "Americas", "Asi…
+$ subregion  &lt;chr&gt; "Melanesia", "Eastern Africa", "Northern Africa", "Northern…
+$ region_wb  &lt;chr&gt; "East Asia &amp; Pacific", "Sub-Saharan Africa", "Middle East &amp;…
+$ name_len   &lt;int&gt; 4, 8, 9, 6, 24, 10, 10, 16, 9, 9, 5, 15, 7, 5, 5, 4, 5, 14,…
+$ long_len   &lt;int&gt; 4, 8, 14, 6, 13, 10, 10, 16, 9, 9, 5, 32, 7, 5, 5, 4, 5, 18…
+$ abbrev_len &lt;int&gt; 4, 5, 7, 4, 6, 4, 4, 6, 5, 4, 5, 6, 4, 4, 5, 4, 5, 9, 4, 4,…
+$ tiny       &lt;int&gt; -99, -99, -99, -99, -99, -99, 5, -99, -99, -99, -99, -99, -…
+$ homepart   &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ min_zoom   &lt;dbl&gt; 0.0, 0.0, 4.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,…
+$ min_label  &lt;dbl&gt; 3.0, 3.0, 6.0, 1.7, 1.7, 2.7, 3.0, 2.5, 1.7, 2.0, 1.7, 2.0,…
+$ max_label  &lt;dbl&gt; 8.0, 8.0, 11.0, 5.7, 5.7, 7.0, 8.0, 7.5, 6.7, 7.0, 6.7, 7.0…
+$ label_x    &lt;dbl&gt; 177.975427, 34.959183, -12.630304, -101.910700, -97.482602,…
+$ label_y    &lt;dbl&gt; -17.826099, -6.051866, 23.967592, 60.324287, 39.538479, 49.…
+$ ne_id      &lt;dbl&gt; 1159320625, 1159321337, 1159321223, 1159320467, 1159321369,…
+$ wikidataid &lt;chr&gt; "Q712", "Q924", "Q6250", "Q16", "Q30", "Q232", "Q265", "Q69…
+$ name_ar    &lt;chr&gt; "فيجي", "تنزانيا", "الصحراء الغربية", "كندا", "الولايات الم…
+$ name_bn    &lt;chr&gt; "ফিজি", "তানজানিয়া", "পশ্চিম সাহারা", "কানাডা", "মার্কিন যুক্তরাষ্ট্র", "কাজাখস্তান", "উজবেকি…
+$ name_de    &lt;chr&gt; "Fidschi", "Tansania", "Westsahara", "Kanada", "Vereinigte …
+$ name_en    &lt;chr&gt; "Fiji", "Tanzania", "Western Sahara", "Canada", "United Sta…
+$ name_es    &lt;chr&gt; "Fiyi", "Tanzania", "Sahara Occidental", "Canadá", "Estados…
+$ name_fa    &lt;chr&gt; "فیجی", "تانزانیا", "صحرای غربی", "کانادا", "ایالات متحده آ…
+$ name_fr    &lt;chr&gt; "Fidji", "Tanzanie", "Sahara occidental", "Canada", "États-…
+$ name_el    &lt;chr&gt; "Φίτζι", "Τανζανία", "Δυτική Σαχάρα", "Καναδάς", "Ηνωμένες …
+$ name_he    &lt;chr&gt; "פיג'י", "טנזניה", "סהרה המערבית", "קנדה", "ארצות הברית", "…
+$ name_hi    &lt;chr&gt; "फ़िजी", "तंज़ानिया", "पश्चिमी सहारा", "कनाडा", "संयुक्त राज्य अमेरिका", "कज़ाख़िस्तान", "उज़्बे…
+$ name_hu    &lt;chr&gt; "Fidzsi-szigetek", "Tanzánia", "Nyugat-Szahara", "Kanada", …
+$ name_id    &lt;chr&gt; "Fiji", "Tanzania", "Sahara Barat", "Kanada", "Amerika Seri…
+$ name_it    &lt;chr&gt; "Figi", "Tanzania", "Sahara Occidentale", "Canada", "Stati …
+$ name_ja    &lt;chr&gt; "フィジー", "タンザニア", "西サハラ", "カナダ", "アメリカ合衆国", "カザフスタン", "ウズベキス…
+$ name_ko    &lt;chr&gt; "피지", "탄자니아", "서사하라", "캐나다", "미국", "카자흐스탄", "우즈베키스탄", "파푸아뉴…
+$ name_nl    &lt;chr&gt; "Fiji", "Tanzania", "Westelijke Sahara", "Canada", "Verenig…
+$ name_pl    &lt;chr&gt; "Fidżi", "Tanzania", "Sahara Zachodnia", "Kanada", "Stany Z…
+$ name_pt    &lt;chr&gt; "Fiji", "Tanzânia", "Sara Ocidental", "Canadá", "Estados Un…
+$ name_ru    &lt;chr&gt; "Фиджи", "Танзания", "Западная Сахара", "Канада", "США", "К…
+$ name_sv    &lt;chr&gt; "Fiji", "Tanzania", "Västsahara", "Kanada", "USA", "Kazakst…
+$ name_tr    &lt;chr&gt; "Fiji", "Tanzanya", "Batı Sahra", "Kanada", "Amerika Birleş…
+$ name_uk    &lt;chr&gt; "Фіджі", "Танзанія", "Західна Сахара", "Канада", "Сполучені…
+$ name_ur    &lt;chr&gt; "فجی", "تنزانیہ", "مغربی صحارا", "کینیڈا", "ریاستہائے متحدہ…
+$ name_vi    &lt;chr&gt; "Fiji", "Tanzania", "Tây Sahara", "Canada", "Hoa Kỳ", "Kaza…
+$ name_zh    &lt;chr&gt; "斐济", "坦桑尼亚", "西撒哈拉", "加拿大", "美国", "哈萨克斯坦", "乌兹别克斯坦", "巴布亚新…
+$ name_zht   &lt;chr&gt; "斐濟", "坦尚尼亞", "西撒哈拉", "加拿大", "美國", "哈薩克", "烏茲別克", "巴布亞紐幾內亞"…
+$ fclass_iso &lt;chr&gt; "Admin-0 country", "Admin-0 country", "Admin-0 dependency",…
+$ tlc_diff   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_tlc &lt;chr&gt; "Admin-0 country", "Admin-0 country", "Admin-0 dependency",…
+$ fclass_us  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_fr  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ru  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_es  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_cn  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_tw  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_in  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_np  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_pk  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_de  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_gb  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_br  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_il  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ps  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_sa  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_eg  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ma  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_pt  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ar  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_jp  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ko  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_vn  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_tr  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_id  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_pl  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_gr  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_it  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_nl  &lt;chr&gt; NA, NA, "Unrecognized", NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_se  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_bd  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ fclass_ua  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ geometry   &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((180 -16.067..., MULTIPOLYGON (…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|&gt;</span> ggformula<span class="sc">::</span><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>world_selected <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(name, geometry)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(world_selected)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 177
+Columns: 2
+$ name     &lt;chr&gt; "Fiji", "Tanzania", "W. Sahara", "Canada", "United States of …
+$ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((180 -16.067..., MULTIPOLYGON (((…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> panel.C <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(world_selected,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"country"</span><span class="ot">=</span><span class="st">"name"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">|&gt;</span> <span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span> geometry, <span class="at">fill =</span> <span class="sc">~</span>under5_mortality_2018_female)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>panel.C <span class="sc">|&gt;</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">anti_join</span>(sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>(world_selected), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span> <span class="ot">=</span> <span class="st">"name"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(country)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 52 × 1
+   country                         
+   &lt;chr&gt;                           
+ 1 Andorra                         
+ 2 Antigua and Barbuda             
+ 3 Bahrain                         
+ 4 Barbados                        
+ 5 Bolivia (Plurinational State of)
+ 6 Bosnia and Herzegovina          
+ 7 Brunei Darussalam               
+ 8 Cabo Verde                      
+ 9 Central African Republic        
+10 Comoros                         
+# ℹ 42 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>panel.C_fixed <span class="ot">&lt;-</span> panel.C <span class="sc">|&gt;</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">country =</span> dplyr<span class="sc">::</span><span class="fu">case_match</span>(country,</span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Antigua and Barbuda"</span>                   <span class="sc">~</span> <span class="st">"Antigua and Barb."</span>,</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Bolivia (Plurinational State of)"</span>      <span class="sc">~</span> <span class="st">"Bolivia"</span>,</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Bosnia and Herzegovina"</span>                <span class="sc">~</span> <span class="st">"Bosnia and Herz."</span>,</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Brunei Darussalam"</span>                     <span class="sc">~</span> <span class="st">"Brunei"</span>,</span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Central African Republic"</span>              <span class="sc">~</span> <span class="st">"Central African Rep."</span>,</span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cook Islands"</span>                          <span class="sc">~</span> <span class="st">"Cook Is."</span>,</span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cote d'Ivoire"</span>                         <span class="sc">~</span> <span class="st">"C\u00f4te d'Ivoire"</span>,</span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Democratic People's Republic of Korea"</span> <span class="sc">~</span> <span class="st">"North Korea"</span>,</span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Democratic Republic of the Congo"</span>      <span class="sc">~</span> <span class="st">"Dem. Rep. Congo"</span>,</span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Dominican Republic"</span>                    <span class="sc">~</span> <span class="st">"Dominican Rep."</span>,</span>
+<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Equatorial Guinea"</span>                     <span class="sc">~</span> <span class="st">"Eq. Guinea"</span>,</span>
+<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Eswatini"</span>                              <span class="sc">~</span> <span class="st">"eSwatini"</span>,</span>
+<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Iran (Islamic Republic of)"</span>            <span class="sc">~</span> <span class="st">"Iran"</span>,</span>
+<span id="cb82-16"><a href="#cb82-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lao People's Democratic Republic"</span>      <span class="sc">~</span> <span class="st">"Laos"</span>,</span>
+<span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Marshall Islands"</span>                      <span class="sc">~</span> <span class="st">"Marshall Is."</span>,</span>
+<span id="cb82-18"><a href="#cb82-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Micronesia (Federated States of)"</span>      <span class="sc">~</span> <span class="st">"Micronesia"</span>,</span>
+<span id="cb82-19"><a href="#cb82-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Republic of Korea"</span>                     <span class="sc">~</span> <span class="st">"South Korea"</span>,</span>
+<span id="cb82-20"><a href="#cb82-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Republic of Moldova"</span>                   <span class="sc">~</span> <span class="st">"Moldova"</span>,</span>
+<span id="cb82-21"><a href="#cb82-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Russian Federation"</span>                    <span class="sc">~</span> <span class="st">"Russia"</span>,</span>
+<span id="cb82-22"><a href="#cb82-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Saint Kitts and Nevis"</span>                 <span class="sc">~</span> <span class="st">"St. Kitts and Nevis"</span>,</span>
+<span id="cb82-23"><a href="#cb82-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Saint Vincent and the Grenadines"</span>      <span class="sc">~</span> <span class="st">"St. Vin. and Gren."</span>,</span>
+<span id="cb82-24"><a href="#cb82-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sao Tome and Principe"</span>                 <span class="sc">~</span> <span class="st">"S\u00e3o Tom\u00e9 and Principe"</span>,</span>
+<span id="cb82-25"><a href="#cb82-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Solomon Islands"</span>                       <span class="sc">~</span> <span class="st">"Solomon Is."</span>,</span>
+<span id="cb82-26"><a href="#cb82-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"South Sudan"</span>                           <span class="sc">~</span> <span class="st">"S. Sudan"</span>,</span>
+<span id="cb82-27"><a href="#cb82-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"State of Palestine"</span>                    <span class="sc">~</span> <span class="st">"Palestine"</span>,</span>
+<span id="cb82-28"><a href="#cb82-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Syrian Arab Republic"</span>                  <span class="sc">~</span> <span class="st">"Syria"</span>,</span>
+<span id="cb82-29"><a href="#cb82-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"United Republic of Tanzania"</span>           <span class="sc">~</span> <span class="st">"Tanzania"</span>,</span>
+<span id="cb82-30"><a href="#cb82-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"United States"</span>                         <span class="sc">~</span> <span class="st">"United States of America"</span>,</span>
+<span id="cb82-31"><a href="#cb82-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Venezuela (Bolivarian Republic of)"</span>    <span class="sc">~</span> <span class="st">"Venezuela"</span>,</span>
+<span id="cb82-32"><a href="#cb82-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Viet Nam"</span>                              <span class="sc">~</span> <span class="st">"Vietnam"</span>,</span>
+<span id="cb82-33"><a href="#cb82-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">.default =</span> country   <span class="co"># every other country keeps its name unchanged</span></span>
+<span id="cb82-34"><a href="#cb82-34" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `dplyr::mutate()`.
+ℹ In argument: `country = dplyr::case_match(...)`.
+Caused by warning:
+! `case_match()` was deprecated in dplyr 1.2.0.
+ℹ Please use `recode_values()` instead.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> world_selected <span class="sc">|&gt;</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(panel.C_fixed, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"country"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">|&gt;</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span> geometry, <span class="at">fill =</span> <span class="sc">~</span>under5_mortality_2018_female) <span class="sc">|&gt;</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_refine</span>(<span class="fu">scale_fill_gradient</span>(<span class="at">na.value =</span> <span class="st">"grey80"</span>))   <span class="co"># grey = no data in panel.C</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="say-2" class="level3">
 <h3 class="anchored" data-anchor-id="say-2">6. Say</h3>
-<p>Caption + one sentence we will stand behind. Title is a sentence, not a column name.</p>
+<p>African counties like Somalia, Nigeria , Chad have a very high female under 5 mortality rate meanwhile the first world countires in USA,Europe, Australia have the lowest rate. Pakistan , Afghanistan also have a comparatively higher rate whereas India lies in the middle. The most surprising thing about the graph is the huge difference between the darker and the lighter countries which hints at the socio-cultural , economic disparity amongst all countries.</p>
 </section>
 <section id="limit-2" class="level3">
 <h3 class="anchored" data-anchor-id="limit-2">7. Limit</h3>
-<p>What this panel cannot do. Which kit table we refused to abuse.</p>
+<p>The graph cannot point out the socio-cultural , economic and various factors that lead to higher under 5 mortality female rates .</p>
 </section>
 </section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>What the spine looks like after three panels.</p>
-<ul>
-<li>The question we will defend in ninety seconds</li>
-<li>What we will <strong>not</strong> claim</li>
-<li>Which lines were human, which were machine</li>
-<li>Limits: sample, missingness, the test we did not run</li>
-<li>Gift for the steal-this strip (palette, annotation, join trick)</li>
-</ul>
+<section id="panel-d-erin-brockovich" class="level1">
+<h1>Panel-D ( Erin Brockovich )</h1>
+<p>1.Find the lon/lat of Hinkley in Google Maps, and tune your base map in leaflet to point at that town. Use an appropriate map-tiles service provider for base map + zoom setting, so that you can see the PG &amp;E premises, and streets / houses in Hinkley in your map.</p>
+<p>2.Develop in code a dataset / tibble / data frame containing set of points to represent: Tibble #1: Shape of the plume of contaminated water emanating from the PG &amp;E water tanks and running 1 mile or more SOUTHWARDS towards Hinkley ( Shape: POLYGON) Tibble #2: A set of points showing hypothetical locations of the residences of the Jensens, the Robinsons, and any other family that you want to show ( SHAPE: Points ) Tibble #2 contd: Qual Variables? Use your imagination! What did Erin know, apart from location, address, people, their names, and their phone numbers? Think!! Plot your map with the above spatial data on the map. If you can use colour / fill with the Qual variables then that would be thrilling to see.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'magrittr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    set_names</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>plume <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">lng =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.165</span>, <span class="sc">-</span><span class="fl">117.157</span>, <span class="sc">-</span><span class="fl">117.165</span>, <span class="sc">-</span><span class="fl">117.178</span>, <span class="sc">-</span><span class="fl">117.190</span>,</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">117.205</span>, <span class="sc">-</span><span class="fl">117.218</span>, <span class="sc">-</span><span class="fl">117.222</span>, <span class="sc">-</span><span class="fl">117.212</span>, <span class="sc">-</span><span class="fl">117.198</span>,</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">117.182</span>, <span class="sc">-</span><span class="fl">117.172</span>),</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">34.900</span>, <span class="fl">34.906</span>, <span class="fl">34.918</span>, <span class="fl">34.932</span>, <span class="fl">34.945</span>,</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>          <span class="fl">34.958</span>, <span class="fl">34.962</span>, <span class="fl">34.952</span>, <span class="fl">34.938</span>, <span class="fl">34.922</span>,</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>          <span class="fl">34.907</span>, <span class="fl">34.898</span>)</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>landmarks <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"PG&amp;E Hinkley Compressor Station"</span>, <span class="st">"Hinkley"</span>),</span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat  =</span> <span class="fu">c</span>(<span class="fl">34.9030</span>, <span class="fl">34.95</span>),</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">lng  =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.1612</span>, <span class="sc">-</span><span class="fl">117.2</span>)</span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>hinkley_homes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Jensen Family"</span>, <span class="st">"Robinson Family"</span>,</span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Hypothetical Family A"</span>, <span class="st">"Hypothetical Family B"</span>),</span>
+<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">pop  =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat  =</span> <span class="fu">c</span>(<span class="fl">34.9512</span>, <span class="fl">34.9514</span>, <span class="fl">34.9480</span>, <span class="fl">34.9440</span>),</span>
+<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lng  =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.2051</span>, <span class="sc">-</span><span class="fl">117.2046</span>, <span class="sc">-</span><span class="fl">117.2030</span>, <span class="sc">-</span><span class="fl">117.2090</span>)</span>
+<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-26"><a href="#cb90-26" aria-hidden="true" tabindex="-1"></a>hinkley_symptoms <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb90-27"><a href="#cb90-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Jensen Family"</span>, <span class="st">"Jensen Family"</span>, <span class="st">"Jensen Family"</span>,</span>
+<span id="cb90-28"><a href="#cb90-28" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Robinson Family"</span>, <span class="st">"Robinson Family"</span>,</span>
+<span id="cb90-29"><a href="#cb90-29" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Hypothetical Family A"</span>, <span class="st">"Hypothetical Family A"</span>,</span>
+<span id="cb90-30"><a href="#cb90-30" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Hypothetical Family B"</span>, <span class="st">"Hypothetical Family B"</span>),</span>
+<span id="cb90-31"><a href="#cb90-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">symptom =</span> <span class="fu">c</span>(<span class="st">"Tumors"</span>, <span class="st">"Hysterectomy"</span>, <span class="st">"Hodgkin's disease"</span>,</span>
+<span id="cb90-32"><a href="#cb90-32" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Breast cancer"</span>, <span class="st">"Miscarriages"</span>,</span>
+<span id="cb90-33"><a href="#cb90-33" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Nosebleeds"</span>, <span class="st">"Skin rashes"</span>,</span>
+<span id="cb90-34"><a href="#cb90-34" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Chronic pain"</span>, <span class="st">"Ulcers"</span>)</span>
+<span id="cb90-35"><a href="#cb90-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-36"><a href="#cb90-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-37"><a href="#cb90-37" aria-hidden="true" tabindex="-1"></a><span class="co"># One text string of symptoms per home, added to the homes tibble</span></span>
+<span id="cb90-38"><a href="#cb90-38" aria-hidden="true" tabindex="-1"></a>hinkley_homes <span class="ot">&lt;-</span> hinkley_homes <span class="sc">%&gt;%</span></span>
+<span id="cb90-39"><a href="#cb90-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb90-40"><a href="#cb90-40" aria-hidden="true" tabindex="-1"></a>    hinkley_symptoms <span class="sc">%&gt;%</span></span>
+<span id="cb90-41"><a href="#cb90-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
+<span id="cb90-42"><a href="#cb90-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">symptoms =</span> <span class="fu">paste</span>(symptom, <span class="at">collapse =</span> <span class="st">", "</span>)),</span>
+<span id="cb90-43"><a href="#cb90-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"name"</span></span>
+<span id="cb90-44"><a href="#cb90-44" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb90-45"><a href="#cb90-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-46"><a href="#cb90-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-47"><a href="#cb90-47" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb90-48"><a href="#cb90-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb90-49"><a href="#cb90-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.2</span>, <span class="at">lat =</span> <span class="fl">34.95</span>, <span class="at">zoom =</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-50"><a href="#cb90-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> plume, <span class="at">lng =</span> <span class="sc">~</span>lng, <span class="at">lat =</span> <span class="sc">~</span>lat,</span>
+<span id="cb90-51"><a href="#cb90-51" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">weight =</span> <span class="dv">2</span>, <span class="at">fillOpacity =</span> <span class="fl">0.4</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-52"><a href="#cb90-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addMarkers</span>(<span class="at">data =</span> landmarks, <span class="at">popup =</span> <span class="sc">~</span>name) <span class="sc">%&gt;%</span></span>
+<span id="cb90-53"><a href="#cb90-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircles</span>(<span class="at">data =</span> hinkley_homes, <span class="at">radius =</span> <span class="dv">150</span>,</span>
+<span id="cb90-54"><a href="#cb90-54" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"yellow"</span>, <span class="at">fillColor =</span> <span class="st">"red"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-55"><a href="#cb90-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb90-56"><a href="#cb90-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> hinkley_homes,</span>
+<span id="cb90-57"><a href="#cb90-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="sc">~</span>pop <span class="sc">*</span> <span class="dv">4</span>,</span>
+<span id="cb90-58"><a href="#cb90-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb90-59"><a href="#cb90-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb90-60"><a href="#cb90-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.9</span>,</span>
+<span id="cb90-61"><a href="#cb90-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span><span class="fu">paste0</span>(name, <span class="st">": "</span>, symptoms),</span>
+<span id="cb90-62"><a href="#cb90-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">labelOptions =</span> <span class="fu">labelOptions</span>(<span class="at">noHide =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb90-63"><a href="#cb90-63" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Assuming "lng" and "lat" are longitude and latitude, respectively</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Assuming "lng" and "lat" are longitude and latitude, respectively
+Assuming "lng" and "lat" are longitude and latitude, respectively</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-0cec3ace22626fa97b56" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0cec3ace22626fa97b56">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.165,-117.157,-117.165,-117.178,-117.19,-117.205,-117.218,-117.222,-117.212,-117.198,-117.182,-117.172],"lat":[34.9,34.906,34.918,34.932,34.945,34.958,34.962,34.952,34.938,34.922,34.907,34.898]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":2,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.4,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[[34.903,34.95],[-117.1612,-117.2],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["PG&E Hinkley Compressor Station","Hinkley"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[[34.9512,34.9514,34.948,34.944],[-117.2051,-117.2046,-117.203,-117.209],150,null,null,{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.9512,34.9514,34.948,34.944],[-117.2051,-117.2046,-117.203,-117.209],[12,8,16,20],null,null,{"interactive":true,"className":"","stroke":false,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.9},null,null,null,null,["Jensen Family: Tumors, Hysterectomy, Hodgkin's disease","Robinson Family: Breast cancer, Miscarriages","Hypothetical Family A: Nosebleeds, Skin rashes","Hypothetical Family B: Chronic pain, Ulcers"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.95,-117.2],12,[]],"limits":{"lat":[34.898,34.962],"lng":[-117.222,-117.157]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 </section>
 
 </main>
