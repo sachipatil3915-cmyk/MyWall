@@ -6,14 +6,14 @@ format:
   html:
     toc: true
     toc-depth: 2
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 # Spine
 
 > How do bodies measure, how do people talk about mind and school, and how long do countries live?
-
-
-
 
 # Panel A — body / measure
 
@@ -21,10 +21,11 @@ format:
 
 ### 1. See the table
 
-What is a case? Which columns are Quant / Qual? What is missing?
+What is a case?
+Which columns are Quant / Qual?
+What is missing?
 
--We have 6 quantitative variables in our data -  age,weight_kg,height_cm,wasit_cm,hip_cm,chest_cm
-and only 1 qualitative varaible - sex 
+-We have 6 quantitative variables in our data - age,weight_kg,height_cm,wasit_cm,hip_cm,chest_cm and only 1 qualitative varaible - sex
 
 ``` r
 # glimpse() / inspect() / skim()
@@ -55,11 +56,11 @@ inspect(myPanelAData)
 skim(myPanelAData)
 ```
 
-
-
 ### 2. Ask
 
-One question *this* table can answer. One it cannot. Write both.
+One question *this* table can answer.
+One it cannot.
+Write both.
 
 Who is heavier between men and women ?
 what is the proportion of men and women ?
@@ -77,7 +78,8 @@ What is the variation in weight in the given dataset ?
 
 ### 3. Choose a mark
 
-Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+Geom, map mark, or (later) test that matches the pair type.
+Name it before you code.
 
 Who is heavier between men and women ?
 -histogram
@@ -91,12 +93,11 @@ How does waist size vary for men and women?
 How does hip size vary for men and women?
 -density
 
-How does chest size vary for men and women
--density
+How does chest size vary for men and women -density
 
 Which sex has a larger variation in their age ranges ?
 - bar
- 
+
 Who is taller between men and women ?
 -histogram
 
@@ -104,55 +105,53 @@ What are the age ranges in the dataset ?
 -bar
 
 What is the variation in chest size in the given dataset?
--density 
+-density
 
 What is the variation in waist size in the given dataset ?
--density 
+-density
 
 What is the variation in hip size in the given dataset ?
--density 
+-density
 
 What is the variation in height in the given dataset ?
--density 
+-density
 
 What is the variation in weight in the given dataset ?
--density 
-
-
-
+-density
 
 ### 4. Predict
 
 We predict the graph to depict the chest size and hip size of women to be more than men.
-Referring to the stereotypical anatomy , we predict the variation in chest size and hip size  of women to be more than men. 
+Referring to the stereotypical anatomy , we predict the variation in chest size and hip size of women to be more than men.
 
 ### 5. Make
 
+1)Who is heavier between men and women ?
+\`
 
-
-
-1)Who is heavier between men and women  ? `
 ```{r}
 myPanelAData |> gf_histogram(~weight_kg,fill =~sex,bins = 50)
 
 ```
+
 2)what is the proportion of men and women ?
+
 ```{r}
 
 myPanelAData |> gf_bar(~sex,fill=~sex)
 
 ```
 
-3)How does  waist size vary for men and women?
+3)How does waist size vary for men and women?
+
 ```{r}
 
 myPanelAData |> gf_histogram(~waist_cm,fill=~sex)
 
 ```
 
-
-
 4)How does hip size vary for men and women?
+
 ```{r}
 
 myPanelAData |> gf_density(~hip_cm,fill=~sex)
@@ -160,6 +159,7 @@ myPanelAData |> gf_density(~hip_cm,fill=~sex)
 ```
 
 5)How does chest size vary for men and women
+
 ```{r}
 
 myPanelAData |> gf_density(~chest_cm,fill=~sex)
@@ -167,14 +167,18 @@ myPanelAData |> gf_density(~chest_cm,fill=~sex)
 ```
 
 6)Who is older in the given dataset?
+
 ```{r}
 myPanelAData |> gf_bar(~ age, fill = ~ sex)
 ```
 
-7)Who is taller between men and women ? -histogram
+7)Who is taller between men and women ?
+-histogram
+
 ```{r}
 myPanelAData |> gf_histogram(~height_cm,fill =~sex,bins = 50)
 ```
+
 8)What are the age ranges in the dataset ?
 
 ```{r}
@@ -182,51 +186,54 @@ myPanelAData |> gf_bar(~age)
 ```
 
 9)What is the variation in chest size in the given dataset
+
 ```{r}
 myPanelAData |> gf_density(~chest_cm)
 ```
+
 10)What is the variation in waist size in the given dataset
+
 ```{r}
 myPanelAData |> gf_density(~waist_cm)
 ```
 
-11)What is the variation in hip size in the given dataset 
+11)What is the variation in hip size in the given dataset
+
 ```{r}
 myPanelAData |> gf_density(~hip_cm)
 ```
 
 12)What is the variation in height in the given dataset
+
 ```{r}
 myPanelAData |> gf_density(~height_cm)
 ```
 
 13)What is the variation in weight in the given dataset
+
 ```{r}
 myPanelAData |> gf_density(~weight_kg)
 ```
 
-
-
-
-
 ### 6. Say
 
+We all found the density graph comparing chest sizes of men and women interesting because according to the graph, men have a bigger chest size than women which is quite unexpected.
+Men also have larger variation in the sizes while women have more difference in density for different sizes this is surprising because according to the bar graph comparing the count of men and women , women are more in quantity.
 
-We all found the density graph comparing chest sizes of men and women interesting  because according to the graph, men have a bigger chest size than women which is quite unexpected. Men also have larger variation in the sizes while women have more difference in density for different sizes this is surprising because according to the bar graph comparing the count of men and women , women are more in quantity.
-
-We also found the density graph comparing hip size of men and women surprising because it is contrasting the general belief that women have wider hips. 
+We also found the density graph comparing hip size of men and women surprising because it is contrasting the general belief that women have wider hips.
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
+What this panel cannot do.
+Which kit table we refused to abuse.
+
 ```{r}
 myPanelAData |> group_by(sex) |> summarise(mean_chest_cm=mean(chest_cm,na.rm=T))
 ```
+
 ```{r}
 mosaic::t_test(chest_cm ~ sex, data= myPanelAData)
 ```
-
-
 
 # Panel B — category / talk
 
@@ -234,39 +241,38 @@ mosaic::t_test(chest_cm ~ sex, data= myPanelAData)
 
 ### 1. See the table
 
-What is a case? Which columns are Quant / Qual? What is missing?
+What is a case?
+Which columns are Quant / Qual?
+What is missing?
 
-The quantitative variables in  the dataset are -hours of relaxation(hrsrelax), hours of labour (hrsl) and mental health(mntlhlth) {3}
-The qualitative variables in  the dataset are-degree, marijuana(grass) {2}
+The quantitative variables in the dataset are -hours of relaxation(hrsrelax), hours of labour (hrsl) and mental health(mntlhlth) {3} The qualitative variables in the dataset are-degree, marijuana(grass) {2}
+
 ``` r
 # glimpse() / inspect() / skim()
 ```
+
 ```{r}
 myPanelBData <- read_csv(file="data/panel-B.csv")
 ```
- 
+
 ```{r}
 glimpse(myPanelBData)
 ```
+
 ```{r}
 skim(myPanelBData)
 ```
- 
 
- 
 ### 2. Ask
- 
-A question the graph can answer -
-Does the education of a person affect their opinion on whether marijuana should be legal or not ?
+
+A question the graph can answer - Does the education of a person affect their opinion on whether marijuana should be legal or not ?
 
 A question the graph cannot answer -
-
-
 
 ### 3. Choose a mark
 
 Does the education of a person affect their opinion on whether marijuana should be legal or not ?
--Mosaic graph 
+-Mosaic graph
 
 ### 4. Predict
 
@@ -274,88 +280,329 @@ we predict that a person pursuing a higher education degree would want marijuana
 
 ### 5. Make
 
-
-modifying 
+modifying
 
 ```{r}
 myPanelBData_mod <- myPanelBData |> drop_na(grass)
 ```
+
 ```{r}
 dim(myPanelBData_mod)
 ```
+
 ```{r}
 vcd::structable(degree~grass, data = myPanelBData)
 ```
+
 ```{r}
 vcd::structable(degree~grass, data=myPanelBData) |>
   vcd::mosaic(labeling_args = list(rot_labels = c(top = 45)),
               margins = c(top = 6))
 ```
 
-
-
-
-
 ### 6. Say
 
-looking at the graph, the ratio of people who think marijuana should be legal and not legal appears to be similar, in each individual degree. 
-saying that, it is surprising information to see that the percentage of high schoolers who want marijuana to be legal is way larger than any other degrees.But this could also be because the number of high schoolers in this dataset is much more. 
+looking at the graph, the ratio of people who think marijuana should be legal and not legal appears to be similar, in each individual degree.
+saying that, it is surprising information to see that the percentage of high schoolers who want marijuana to be legal is way larger than any other degrees.But this could also be because the number of high schoolers in this dataset is much more.
 
 ### 7. Limit
-
 
 # Panel C — place
 
 *lifeExp is the honest fill. pop is a count — symbol map, not choropleth.*
 
-Geometry is not in the CSV. Join in R, then use the same seven headings.
+Geometry is not in the CSV.
+Join in R, then use the same seven headings.
+  
+{{< include _setup.qmd >}}
+  
+```{r}
+library(tidyverse)
+library(ggformula)
+library(sf)
+library(rnaturalearth)
+library(mosaic)
+library(skimr)
+```
 
 ``` r
 # library(sf) # library(rnaturalearth) # world <- ne_countries(scale = "medium", returnclass = "sf") # # join on country name; list the unmatched labels
 ```
 
+```{r}
+panel.C <- read_csv(file="data/panel-C.csv")
+```
+
 ### 1. See the table
 
-What is a case? Which columns are Quant / Qual? What is missing?
+What is a case?
+Which columns are Quant / Qual?
+What is missing?
 
 ``` r
 # glimpse() / inspect() / skim()
 ```
 
+```{r}
+glimpse(panel.C)
+```
+
+```{r}
+inspect(panel.C)
+```
+
+```{r}
+skim(panel.C)
+
+```
+
 ### 2. Ask
 
-One question *this* table can answer. One it cannot. Write both.
+One question *this* table can answer.
+One it cannot.
+Write both.
+
+```{r}
+
+```
 
 ### 3. Choose a mark
 
-Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+What is the distribution of neonatal mortality rates across all countires in the year 2018? 
+- Density
+
+What is the distribution of neonatal mortality rates across all countires in the year 2018?
+-Density 
+
+What is the distribution of female under 5 mortality rates across all countries in the year 2018?
+-histogram 
+
+
+
+
 
 ### 4. Predict
 
-What do we think we will see? One sentence, before Run.
 
 ### 5. Make
 
-Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+Human brick first.
+Optional: one AI prompt, pasted below, only for what section 3 named.
 
 ``` r
 # human chunk  # ## Prompt we actually used # ai_draft # ours
 ```
+What is the distrubution of neonatal mortality rates across all countires in the year 2018?
+```{r}
+panel.C |> gf_density(~neonatal_mortality_2018)
+```
+Which are the countries with more than 40 neonatal mortality rate?
+```{r}
+panel.C |> dplyr::filter(neonatal_mortality_2018 >= 40)
+```
+
+
+```{r}
+panel.C |> gf_density(~under5_mortality_2018)
+
+```
+```{r}
+panel.C |> dplyr::filter(under5_mortality_2018>= 120)
+```
+
+
+```{r}
+panel.C |> gf_histogram(~under5_mortality_2018_female)
+```
+```{r}
+panel.C |> dplyr::filter(under5_mortality_2018_female>= 110)
+```
+
+
+```{r}
+panel.C |> gf_histogram(~under5_mortality_2018_male)
+```
+```{r}
+panel.C |> dplyr::filter(under5_mortality_2018_male>= 120)
+```
+
+
+
+```{r}
+glimpse(world_selected)
+```
+
+```{r}
+glimpse(panel.C)
+```
+
+
+```{r}
+C_mod <- panel.C |> dplyr::left_join(world_selected,by=c("country"="name"))
+```
+
+```{r}
+world <- rnaturalearth::ne_countries(returnclass = "sf")
+glimpse(world)
+world |> ggformula::gf_sf(geometry = ~geometry)
+world_selected <- world |> dplyr::select(name, geometry)
+glimpse(world_selected)
+```
+
+
+```{r}
+C_mod |> gf_sf(geometry = ~ geometry, fill = ~under5_mortality_2018_female)
+```
+```{r}
+panel.C |>
+  dplyr::anti_join(sf::st_drop_geometry(world_selected), by = c("country" = "name")) |>
+  dplyr::select(country)
+```
+```{r}
+panel.C_fixed <- panel.C |>
+  dplyr::mutate(country = dplyr::case_match(country,
+    "Antigua and Barbuda"                   ~ "Antigua and Barb.",
+    "Bolivia (Plurinational State of)"      ~ "Bolivia",
+    "Bosnia and Herzegovina"                ~ "Bosnia and Herz.",
+    "Brunei Darussalam"                     ~ "Brunei",
+    "Central African Republic"              ~ "Central African Rep.",
+    "Cook Islands"                          ~ "Cook Is.",
+    "Cote d'Ivoire"                         ~ "C\u00f4te d'Ivoire",
+    "Democratic People's Republic of Korea" ~ "North Korea",
+    "Democratic Republic of the Congo"      ~ "Dem. Rep. Congo",
+    "Dominican Republic"                    ~ "Dominican Rep.",
+    "Equatorial Guinea"                     ~ "Eq. Guinea",
+    "Eswatini"                              ~ "eSwatini",
+    "Iran (Islamic Republic of)"            ~ "Iran",
+    "Lao People's Democratic Republic"      ~ "Laos",
+    "Marshall Islands"                      ~ "Marshall Is.",
+    "Micronesia (Federated States of)"      ~ "Micronesia",
+    "Republic of Korea"                     ~ "South Korea",
+    "Republic of Moldova"                   ~ "Moldova",
+    "Russian Federation"                    ~ "Russia",
+    "Saint Kitts and Nevis"                 ~ "St. Kitts and Nevis",
+    "Saint Vincent and the Grenadines"      ~ "St. Vin. and Gren.",
+    "Sao Tome and Principe"                 ~ "S\u00e3o Tom\u00e9 and Principe",
+    "Solomon Islands"                       ~ "Solomon Is.",
+    "South Sudan"                           ~ "S. Sudan",
+    "State of Palestine"                    ~ "Palestine",
+    "Syrian Arab Republic"                  ~ "Syria",
+    "United Republic of Tanzania"           ~ "Tanzania",
+    "United States"                         ~ "United States of America",
+    "Venezuela (Bolivarian Republic of)"    ~ "Venezuela",
+    "Viet Nam"                              ~ "Vietnam",
+    .default = country   # every other country keeps its name unchanged
+  ))
+```
+
+```{r}
+panel.C_fixed |>
+  dplyr::anti_join(sf::st_drop_geometry(world_selected), by = c("country" = "name")) |>
+  dplyr::select(country)
+```
+```{r}
+C_mod <- world_selected |>
+  dplyr::left_join(panel.C_fixed, by = c("name" = "country"))
+```
+
+```{r}
+C_mod |>
+  gf_sf(geometry = ~ geometry, fill = ~under5_mortality_2018_female) |>
+  gf_refine(scale_fill_gradient(na.value = "grey80"))   # grey = no data in panel.C
+```
+
+
 
 ### 6. Say
 
-Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+African counties like Somalia, Nigeria , Chad have  a very high female under 5 mortality rate meanwhile the first world countires in  USA,Europe, Australia have the lowest rate. Pakistan , Afghanistan also have a comparatively higher rate whereas India lies in the middle. The most surprising thing about the graph is the huge  difference  between the darker and the lighter countries which hints at the socio-cultural , economic disparity amongst all countries. 
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
+The graph cannot point out the socio-cultural , economic and various factors that lead to higher under 5 mortality female rates . 
 
-# Conclusion
 
-What the spine looks like after three panels.
+# Panel-D ( Erin Brockovich )
 
-- The question we will defend in ninety seconds
-- What we will **not** claim
-- Which lines were human, which were machine
-- Limits: sample, missingness, the test we did not run
-- Gift for the steal-this strip (palette, annotation, join trick)
+1.Find the lon/lat of Hinkley in Google Maps, and tune your base map in leaflet to point at that town. 
+Use an appropriate map-tiles service provider for base map + zoom setting, so that you can see the PG &E premises, and streets / houses in Hinkley in your map. 
+
+2.Develop in code a dataset / tibble / data frame containing set of points to represent:
+Tibble #1: Shape of the plume of contaminated water emanating from the PG &E water tanks and running 1 mile or more SOUTHWARDS towards Hinkley ( Shape: POLYGON)
+Tibble #2: A set of points showing hypothetical locations of the residences of the Jensens, the Robinsons, and any other family that you want to show ( SHAPE: Points )
+Tibble #2 contd: Qual Variables? Use your imagination! What did Erin know, apart from location, address, people, their names, and their phone numbers? Think!!
+Plot your map with the above spatial data on the map. If you can use colour / fill with the Qual variables then that would be thrilling to see. 
+
+```{r}
+library(tibble)
+library(dplyr)
+library(leaflet)
+library(magrittr)
+
+plume <- tibble(
+  lng = c(-117.165, -117.157, -117.165, -117.178, -117.190,
+          -117.205, -117.218, -117.222, -117.212, -117.198,
+          -117.182, -117.172),
+  lat = c(34.900, 34.906, 34.918, 34.932, 34.945,
+          34.958, 34.962, 34.952, 34.938, 34.922,
+          34.907, 34.898)
+)
+
+landmarks <- tibble(
+  name = c("PG&E Hinkley Compressor Station", "Hinkley"),
+  lat  = c(34.9030, 34.95),
+  lng  = c(-117.1612, -117.2)
+)
+
+
+
+hinkley_homes <- tibble(
+  name = c("Jensen Family", "Robinson Family",
+           "Hypothetical Family A", "Hypothetical Family B"),
+  pop  = c(3, 2, 4, 5),
+  lat  = c(34.9512, 34.9514, 34.9480, 34.9440),
+  lng  = c(-117.2051, -117.2046, -117.2030, -117.2090)
+)
+
+hinkley_symptoms <- tibble(
+  name = c("Jensen Family", "Jensen Family", "Jensen Family",
+           "Robinson Family", "Robinson Family",
+           "Hypothetical Family A", "Hypothetical Family A",
+           "Hypothetical Family B", "Hypothetical Family B"),
+  symptom = c("Tumors", "Hysterectomy", "Hodgkin's disease",
+              "Breast cancer", "Miscarriages",
+              "Nosebleeds", "Skin rashes",
+              "Chronic pain", "Ulcers")
+)
+
+# One text string of symptoms per home, added to the homes tibble
+hinkley_homes <- hinkley_homes %>%
+  left_join(
+    hinkley_symptoms %>%
+      group_by(name) %>%
+      summarise(symptoms = paste(symptom, collapse = ", ")),
+    by = "name"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -117.2, lat = 34.95, zoom = 12) %>%
+  addPolygons(data = plume, lng = ~lng, lat = ~lat,
+              color = "red", weight = 2, fillOpacity = 0.4) %>%
+  addMarkers(data = landmarks, popup = ~name) %>%
+  addCircles(data = hinkley_homes, radius = 150,
+             color = "yellow", fillColor = "red") %>%
+  addCircleMarkers(
+    data = hinkley_homes,
+    radius = ~pop * 4,
+    color = "blue",
+    stroke = FALSE,
+    fillOpacity = 0.9,
+    label = ~paste0(name, ": ", symptoms),
+    labelOptions = labelOptions(noHide = TRUE)
+  )
+```
+
+
+
