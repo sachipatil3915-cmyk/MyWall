@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 ---
 title: "Group 3 — Bodies and talk"
 subtitle: "Studio wall"
@@ -323,9 +314,9 @@ saying that, it is surprising information to see that the percentage of high sch
 
 Geometry is not in the CSV.
 Join in R, then use the same seven headings.
-  
+
 {{< include _setup.qmd >}}
-  
+
 ```{r}
 library(tidyverse)
 library(ggformula)
@@ -372,27 +363,19 @@ One question *this* table can answer.
 One it cannot.
 Write both.
 
-```{r}
-
-```
 
 ### 3. Choose a mark
 
-What is the distribution of neonatal mortality rates across all countires in the year 2018? 
+What is the distribution of neonatal mortality rates across all countires in the year 2018?
 - Density
 
 What is the distribution of neonatal mortality rates across all countires in the year 2018?
--Density 
+-Density
 
 What is the distribution of female under 5 mortality rates across all countries in the year 2018?
--histogram 
-
-
-
-
+-histogram
 
 ### 4. Predict
-
 
 ### 5. Make
 
@@ -402,46 +385,43 @@ Optional: one AI prompt, pasted below, only for what section 3 named.
 ``` r
 # human chunk  # ## Prompt we actually used # ai_draft # ours
 ```
+
 What is the distrubution of neonatal mortality rates across all countires in the year 2018?
+
 ```{r}
 panel.C |> gf_density(~neonatal_mortality_2018)
 ```
+
 Which are the countries with more than 40 neonatal mortality rate?
+
 ```{r}
 panel.C |> dplyr::filter(neonatal_mortality_2018 >= 40)
 ```
-
 
 ```{r}
 panel.C |> gf_density(~under5_mortality_2018)
 
 ```
+
 ```{r}
 panel.C |> dplyr::filter(under5_mortality_2018>= 120)
 ```
 
-
 ```{r}
 panel.C |> gf_histogram(~under5_mortality_2018_female)
 ```
+
 ```{r}
 panel.C |> dplyr::filter(under5_mortality_2018_female>= 110)
 ```
 
-
 ```{r}
 panel.C |> gf_histogram(~under5_mortality_2018_male)
 ```
+
 ```{r}
 panel.C |> dplyr::filter(under5_mortality_2018_male>= 120)
 ```
-
-
-
-
-
-
-
 
 ```{r}
 world <- rnaturalearth::ne_countries(returnclass = "sf")
@@ -455,15 +435,16 @@ glimpse(world_selected)
 C_mod <- panel.C |> dplyr::left_join(world_selected,by=c("country"="name"))
 ```
 
-
 ```{r}
 C_mod |> gf_sf(geometry = ~ geometry, fill = ~under5_mortality_2018_female)
 ```
+
 ```{r}
 panel.C |>
   dplyr::anti_join(sf::st_drop_geometry(world_selected), by = c("country" = "name")) |>
   dplyr::select(country)
 ```
+
 ```{r}
 panel.C_fixed <- panel.C |>
   dplyr::mutate(country = dplyr::case_match(country,
@@ -501,7 +482,6 @@ panel.C_fixed <- panel.C |>
   ))
 ```
 
-
 ```{r}
 C_mod <- world_selected |>
   dplyr::left_join(panel.C_fixed, by = c("name" = "country"))
@@ -513,27 +493,27 @@ C_mod |>
   gf_refine(scale_fill_gradient(na.value = "grey80"))   # grey = no data in panel.C
 ```
 
-
-
 ### 6. Say
 
-African counties like Somalia, Nigeria , Chad have  a very high female under 5 mortality rate meanwhile the first world countires in  USA,Europe, Australia have the lowest rate. Pakistan , Afghanistan also have a comparatively higher rate whereas India lies in the middle. The most surprising thing about the graph is the huge  difference  between the darker and the lighter countries which hints at the socio-cultural , economic disparity amongst all countries. 
+African counties like Somalia, Nigeria , Chad have a very high female under 5 mortality rate meanwhile the first world countires in USA,Europe, Australia have the lowest rate.
+Pakistan , Afghanistan also have a comparatively higher rate whereas India lies in the middle.
+The most surprising thing about the graph is the huge difference between the darker and the lighter countries which hints at the socio-cultural , economic disparity amongst all countries.
 
 ### 7. Limit
 
-The graph cannot point out the socio-cultural , economic and various factors that lead to higher under 5 mortality female rates . 
-
+The graph cannot point out the socio-cultural , economic and various factors that lead to higher under 5 mortality female rates .
 
 # Panel-D ( Erin Brockovich )
 
-1.Find the lon/lat of Hinkley in Google Maps, and tune your base map in leaflet to point at that town. 
-Use an appropriate map-tiles service provider for base map + zoom setting, so that you can see the PG &E premises, and streets / houses in Hinkley in your map. 
+1.Find the lon/lat of Hinkley in Google Maps, and tune your base map in leaflet to point at that town.
+Use an appropriate map-tiles service provider for base map + zoom setting, so that you can see the PG &E premises, and streets / houses in Hinkley in your map.
 
-2.Develop in code a dataset / tibble / data frame containing set of points to represent:
-Tibble #1: Shape of the plume of contaminated water emanating from the PG &E water tanks and running 1 mile or more SOUTHWARDS towards Hinkley ( Shape: POLYGON)
-Tibble #2: A set of points showing hypothetical locations of the residences of the Jensens, the Robinsons, and any other family that you want to show ( SHAPE: Points )
-Tibble #2 contd: Qual Variables? Use your imagination! What did Erin know, apart from location, address, people, their names, and their phone numbers? Think!!
-Plot your map with the above spatial data on the map. If you can use colour / fill with the Qual variables then that would be thrilling to see. 
+2.Develop in code a dataset / tibble / data frame containing set of points to represent: Tibble #1: Shape of the plume of contaminated water emanating from the PG &E water tanks and running 1 mile or more SOUTHWARDS towards Hinkley ( Shape: POLYGON) Tibble #2: A set of points showing hypothetical locations of the residences of the Jensens, the Robinsons, and any other family that you want to show ( SHAPE: Points ) Tibble #2 contd: Qual Variables?
+Use your imagination!
+What did Erin know, apart from location, address, people, their names, and their phone numbers?
+Think!!
+Plot your map with the above spatial data on the map.
+If you can use colour / fill with the Qual variables then that would be thrilling to see.
 
 ```{r}
 library(tibble)
@@ -605,6 +585,244 @@ leaflet() %>%
     labelOptions = labelOptions(noHide = TRUE)
   )
 ```
+
+
+
+## Panel E Do SMI students find it easier to get into a relationship than MIT students?
+
+```{r}
+library(readr)
+library(tidyverse)
+library(mosaic)
+library(skimr)
+library(ggformula)
+library(rnaturalearth)
+```
+
+```{r}
+#| label: load-panel-e-data
+Panel_E    <- read_csv("Panel-E.csv")
+Panel_E2_2_ <- read_csv("Panel-E2 (2).csv")
+Panel_E1    <- read_csv("Panel_E1.csv")
+Panel_E3    <- read_csv("Panel_E3.csv")
+Panel_E4    <- read_csv("Panel_E4.csv")
+Panel_E6    <- read_csv("Panel_E6.csv")
+```
+
+
+```{r}
+glimpse(Panel_E)
+
+```
+
+```{r}
+inspect(Panel_E)
+
+```
+
+```{r}
+skim(Panel_E)
+```
+
+```{r}
+Panel_E |> mutate(department = as.factor(department))
+```
+
+```{r}
+Panel_E |> mutate(relationship_status = as.factor(relationship_status))
+
+```
+
+```{r}
+Panel_Emod<- Panel_E|> dplyr::mutate(department = as.factor(department), relationship_status = as.factor(relationship_status))
+```
+
+```{r}
+glimpse(Panel_Emod)
+```
+
+```{r}
+mosaic::xchisq.test(department ~ relationship_status, data = Panel_Emod)
+
+```
+
+```{r}
+vcd::structable(relationship_status ~ department, data = Panel_Emod) |>
+  vcd::mosaic(shade = TRUE, gp = vcd::shading_Friendly)
+
+```
+
+## Conclusion
+
+Our investigation showed that the difference in relationship status between SMI and MIT respondents was small.
+The chi-square test did not provide sufficient evidence of an association between the two variables.
+This taught us that our initial hunches do not always match what the data reveals.
+We also realised that relationship status alone cannot explain how easy or difficult it is to get into a relationship.
+Ultimately, this exercise helped us understand the importance of questioning our assumptions and interpreting data carefully.
+
+### Panel-E2 Are students in SMI more introverted than MIT students 
+
+```{r}
+glimpse(Panel_E2_2_)
+skim(Panel_E2_2_)
+inspect(Panel_E2_2_)
+```
+
+```{r}
+E2_mod <- Panel_E2_2_ |> mutate(across(where(is.character),as.factor))
+glimpse(E2_mod)
+```
+
+```{r}
+E2_mod|> gf_bar(~`mbti-type`, fill = ~department)
+```
+
+```{r}
+E2_mod |> gf_bar(~`social-orientation`, fill = ~department, position = "dodge")
+
+```
+
+```{r}
+mosaic::xchisq.test(`social-orientation` ~ department, data = E2_mod)
+```
+
+### Conclusion
+After analysis of the data, we were able to find out that SMI students are, on average, more introverted than MIT students.
+
+
+### Panel-E4 Do girls have a higher monthly allowance than guys?
+
+```{r}
+glimpse(Panel_E4)
+inspect(Panel_E4)
+skim(Panel_E4)
+
+```
+```{r}
+
+Panel_E4mod <- Panel_E4 |> dplyr::mutate( gender = as.factor(gender))
+glimpse(Panel_E4mod)
+```
+
+```{r}
+Panel_E4mod |> gf_density(~ allowance, fill = ~gender)
+```
+
+```{r}
+mosaic::t.test(allowance ~ gender, data = Panel_E4mod)
+```
+## Conclusion 
+
+According to the T.test, the p value is 0.49 which is much higher than 0.05. Which means that being a boy or a girl has no affect on monthly allowance which is really nice in because equality
+
+
+
+
+### Panel E1 Friends vs House vs Modern Family
+
+
+```{r}
+library(tidyr)
+library(supernova)
+
+```
+
+```{r}
+Panel_E1 <- Panel_E1|>
+  janitor::clean_names()
+
+```
+
+```{r}
+names(Panel_E1)
+```
+
+```{r}
+Panel_E1_mod<- Panel_E1 |>
+  mutate(
+    friends = readr::parse_number(friends),
+    house = readr::parse_number(house),
+    modern_family = readr::parse_number(modern_family)
+  ) |>
+  pivot_longer(
+    cols = c(friends, house, modern_family),
+    names_to = "show",
+    values_to = "scores"
+  )
+
+
+```
+
+```{r}
+aov(scores ~ show, data = Panel_E1_mod) |>
+  supernova::supernova()
+```
+### Conclusion
+Overall, Modern Family received the highest average rating, followed by Friends and House. This suggests that Modern Family was the most highly rated of the three shows among the students who responded. However, the number of ratings varied between shows, and the results represent only the students in this dataset. The analysis helps compare their ratings, but it cannot explain why students preferred one show over another.
+
+
+
+### Panel E3 Belief in AI, Art VS Design
+
+```{r}
+glimpse(Panel_E3)
+inspect(Panel_E3)
+skim(Panel_E3)
+```
+
+```{r}
+Panel_E3mod <- Panel_E3 |> dplyr::mutate(gender = as.factor(gender), program = as.factor(program),AI_belief = as.factor(AI_belief))
+```
+
+```{r}
+glimpse(Panel_E3mod)
+```
+
+```{r}
+mosaic::xchisq.test(AI_belief ~ gender, data = Panel_E3mod)
+
+```
+
+```{r}
+vcd::mosaic(~ gender + AI_belief, data = Panel_E3mod) 
+```
+### Conclusion 
+
+The analysis explored whether boys are more likely than girls to believe in AI. The mosaic plot suggests that a higher proportion of boys believe in AI compared to girls in this sample of 60 respondents. This indicates a possible association between gender and AI belief. However, the findings are limited to the respondents included in this dataset and cannot necessarily be generalised to a larger population.
+
+
+### Panel E6  Do tatoos make people attractive?
+
+```{r}
+glimpse(Panel_E6) 
+inspect(Panel_E6) 
+skim(Panel_E6)
+
+```
+
+```{r}
+Panel_E6Mod <- Panel_E6 |> dplyr::mutate(Gender = as.factor(Gender), `Has_tattoos?` = as.factor(`Has_tattoos?`), Opinion = as.factor(Opinion))
+glimpse(Panel_E6Mod)
+```
+
+```{r}
+mosaic::xchisq.test(`Has_tattoos?` ~ Gender, data = Panel_E6Mod)
+```
+
+```{r}
+Panel_E6Mod |> ggformula::gf_bar( ~`Has_tattoos?`, fill = ~Gender, position = "dodge" )
+```
+
+### Conlusion 
+After analysing the data, we found that men and women in this sample were equally likely to report having tattoos. Out of the 30 men, 15 reported having tattoos, and out of the 30 women, 15 reported having tattoos. This means that 50% of each group reported having tattoos.
+
+The chi-square test can be used to assess whether there is an association between gender and tattoo status. The results do not indicate a difference between the two groups in this sample. However, this does not establish that men and women are equally likely to have tattoos in the wider population. The dataset contains only 60 respondents, so the findings should be interpreted within that limitation.
+
+
+
+
+
+
 
 
 
